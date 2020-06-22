@@ -21,15 +21,17 @@ import com.johnsontraining.studentapplication.model.Student;
 import com.johnsontraining.studentapplication.model.Students;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 
 @RestController
 @RequestMapping("api/v1")
-@Api(value = "Student")
+@Api(value = "Student", tags= {"Student"})
 public class StudentController {
 	
 	private Students cache = new Students();
 
+	@ApiOperation(value = "Get a student's details from the application.", tags = { "Student" })
 	@GetMapping("/student/{studentName}")
 	public ResponseEntity<?> getStudentDetails(@PathVariable String studentName) {
 
@@ -45,6 +47,7 @@ public class StudentController {
 		throw new StudentNotFoundException("Student is not available in the database");
 	}
 
+	@ApiOperation(value = "Get all students details from the application.", tags = { "Student" })
 	@GetMapping("/students")
 	public ResponseEntity<?> getAllStudentDetails() {
 
@@ -55,6 +58,7 @@ public class StudentController {
 		}
 	}
 
+	@ApiOperation(value = "Register a student in the application.", tags = { "Student" })
 	@PostMapping("/student")
 	public ResponseEntity<?> saveStudent(@RequestBody(required = true) Student student) {
 		
@@ -82,6 +86,7 @@ public class StudentController {
 		return new ResponseEntity<ResponseDto>(response, HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "Update a student's details in the application.", tags = { "Student" })
 	@PutMapping("/student")
 	public ResponseEntity<?> updateStudent(@RequestBody(required = true) Student student) {
 		if(cache.getStudents() == null) {
@@ -103,6 +108,7 @@ public class StudentController {
 		throw new StudentNotFoundException(String.format("Student with name '%s' not found in the database.", student.getName()));
 	}
 
+	@ApiOperation(value = "Delete a student's details in the application.", tags = { "Student" })
 	@DeleteMapping("/student/{studentName}")
 	public ResponseEntity<?> deleteStudent(@PathVariable String studentName) {
 		
@@ -114,7 +120,7 @@ public class StudentController {
 					cache.getStudents().remove(currStudent);
 					ResponseDto response = new ResponseDto();
 					response.setStatus("pass");
-					response.setMessage(String.format("Successfully delete the user %s from the database.", studentName));
+					response.setMessage(String.format("Successfully deleted the user %s from the database.", studentName));
 					return new ResponseEntity<ResponseDto>(response, HttpStatus.OK);
 				}
 			}
@@ -122,6 +128,7 @@ public class StudentController {
 		throw new StudentNotFoundException(String.format("Student with name '%s' not found in the database.", studentName));
 	}
 	
+	@ApiOperation(value = "Delete all the students in the application.", tags = { "Student" })
 	@DeleteMapping("/students")
 	public ResponseEntity<?> deleteAllStudents() {
 		if(cache.getStudents() == null) {
