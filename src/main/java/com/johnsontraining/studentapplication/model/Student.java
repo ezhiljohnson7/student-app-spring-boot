@@ -1,5 +1,7 @@
 package com.johnsontraining.studentapplication.model;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
@@ -17,4 +19,5 @@ public class Student {
 	private long mobileNo;
 	private int semester;
 	private @NonNull String department;
+	private List<String> hobbies;
 }
